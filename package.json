@@ -1,0 +1,30 @@
+{
+  "name": "testing-practice",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/mel-121821/testing-practice#readme",
+  "bugs": {
+    "url": "https://github.com/mel-121821/testing-practice/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mel-121821/testing-practice.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.2",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.3",
+    "globals": "^17.4.0"
+  },
+  "dependencies": {
+    "jest": "^30.3.0",
+    "save-dev": "^0.0.1-security"
+  }
+}
