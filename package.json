@@ -1,14 +1,14 @@
 {
-  "name": "testing-practice",
+  "name": "knights-travails",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/mel-121821/testing-practice#readme",
+  "homepage": "https://github.com/mel-121821/knights-travails#readme",
   "bugs": {
-    "url": "https://github.com/mel-121821/testing-practice/issues"
+    "url": "https://github.com/mel-121821/knights-travails/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mel-121821/testing-practice.git"
+    "url": "git+https://github.com/mel-121821/knights-travails.git"
   },
   "license": "ISC",
   "author": "",
