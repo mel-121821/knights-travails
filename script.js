@@ -1,66 +1,48 @@
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+// imports
 
-function reverseString(str) {
-  return str.split("").reverse().join("");
-}
+// Code
 
-const calculator = (() => {
-  const add = (a, b) => {
-    return a + b;
-  };
+const Chessboard = (function () {
+  const rows = 8;
+  const columns = 8;
+  const marker = "0";
+  const recent = "X";
+  const potential = "?";
+  const grid = makeGrid();
 
-  const subtract = (a, b) => {
-    return a - b;
-  };
+  function makeGrid() {
+    const grid = [];
+    for (let i = 0; i < rows; i++) {
+      grid[i] = [];
+      for (let j = 0; j < columns; j++) {
+        grid[i].push("");
+      }
+    }
+    return grid;
+  }
 
-  const multiply = (a, b) => {
-    return a * b;
-  };
+  function markCurrentPlace(x, y) {
+    grid[x][y] = marker;
+  }
 
-  const divide = (a, b) => {
-    return a / b;
-  };
+  function markRecentPlace(x, y) {
+    grid[x][y] = recent;
+  }
 
-  return { add, subtract, multiply, divide };
+  function markPotentials(coordsList) {
+    for (let coords of coordsList) {
+      grid[coords[0]][coords[1]] = potential;
+    }
+  }
+
+  function clearGrid() {
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < columns; j++) {
+        grid[j] = "";
+      }
+    }
+  }
+  return { grid, markCurrentPlace, markRecentPlace, markPotentials, clearGrid };
 })();
 
-function caesarCipher(str, num) {
-  // charCode of [A-Z] == [65-90]
-  // charCode of [a-z] == [97-122]
-  if (num < 0 || num > 26) {
-    throw new Error("Number cannot be negative or greater than 26");
-  }
-  let shifted = "";
-  const regex = /[a-z]/i;
-  for (let i = 0; i < str.length; i++) {
-    let newChar = str[i];
-    if (regex.test(str[i])) {
-      let code = str[i].charCodeAt();
-      let newCode = code + num;
-      if ((code <= 90 && newCode > 90) || newCode > 122) {
-        newCode -= 26;
-      }
-      newChar = String.fromCharCode(newCode);
-    }
-    shifted += newChar;
-  }
-  return shifted;
-}
-
-function analyzeArray(arr) {
-  arr.sort((a, b) => {
-    return a - b;
-  });
-  const length = arr.length;
-  const min = arr[0];
-  const max = arr[length - 1];
-  const average =
-    arr.reduce((a, b) => {
-      return a + b;
-    }, 0) / length;
-  return { length, min, max, average };
-}
-
-export { capitalize, reverseString, calculator, caesarCipher, analyzeArray };
+console.log(Chessboard.grid);
