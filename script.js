@@ -45,4 +45,56 @@ const Chessboard = (function () {
   return { grid, markCurrentPlace, markRecentPlace, markPotentials, clearGrid };
 })();
 
+class Knight {
+  constructor(x = 7, y = 1) {
+    this.x = x;
+    this.y = y;
+    this.moveVariations = [
+      [-2, 1],
+      [-2, -1],
+      [2, 1],
+      [2, -1],
+      [-1, 2],
+      [-1, -2],
+      [1, 2],
+      [1, -2],
+    ];
+    Chessboard.markCurrentPlace(x, y);
+  }
+
+  setPiece(x, y, newX, newY) {
+    Chessboard.markRecentPlace(x, y);
+    Chessboard.markCurrentPlace(newX, newY);
+  }
+
+  checkMoveValidity(arr) {
+    const filtered = arr.filter((subArr) => {
+      if (subArr[0] < 0 || subArr[0] > 7 || subArr[1] < 0 || subArr[1] > 7) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return filtered;
+  }
+
+  getAvailableMoves(x, y) {
+    const potentialMoves = [];
+    for (const option of this.moveVariations) {
+      const newCoords = [x + option[0], y + option[1]];
+      potentialMoves.push(newCoords);
+    }
+    const availableMoves = this.checkMoveValidity(potentialMoves);
+    Chessboard.markPotentials(availableMoves);
+    return availableMoves;
+  }
+}
+
+const knight = new Knight(3, 3);
+
 console.log(Chessboard.grid);
+
+const availableMoves = knight.getAvailableMoves(3, 3);
+console.log(availableMoves);
+
+export { Knight, knight };
