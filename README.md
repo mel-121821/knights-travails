@@ -49,3 +49,7 @@ You can think of the board as having 2-dimensional coordinates. Calling your fun
 
 BFS for a graph:
 https://www.geeksforgeeks.org/dsa/breadth-first-search-or-bfs-for-a-graph/
+
+How to console.log an arr in real time, even if it changes later:
+`console.log(JSON.parse(JSON.stringify(c)))`
+https://stackoverflow.com/questions/11284663/console-log-shows-the-changed-value-of-a-variable-before-the-value-actually-ch
