@@ -1,5 +1,7 @@
 // imports
 import { Chessboard } from "./chessboard.js";
+import { Node } from "./node.js";
+import { AdjacencyGraph } from "./node.js";
 
 // Code
 
@@ -54,26 +56,57 @@ class Knight {
     return availableMoves;
   }
 
-  // pseudocode for knightMoves()
+  knightMoves(newX, newY) {
+    const root = [this.x, this.y];
+    const adjGraph = new AdjacencyGraph();
+    adjGraph.visited(root[0], root[1]); // visit coords
+    let moveCounter = 1;
+    const q = [];
+    q.push(root);
 
-  // start with knight coords - will act as the root - ex. [7, 1]
-  // using the coords, create a node obj that contains the coordinates and whether or not the node is visited
-  // create a q -> q = []
-  // dynamically calculate all available moves ->
-  // add all available coords to the q -> q = [[5, 2], [5, 0], [6, 3]]
-  // visit next item in q
-  // get the next coords and add to q
-  // Need to also create an adjacency graph
-  // for each Node that is created, an adjacency arr is created
-  // Nodes may appear in the graph multiple times
-  // this way you can ensure that a node can be visited multiple times from different paths but not multiple times from the same path
+    while (q.length) {
+      let qLen = q.length;
+      console.log(`while loop q reset. qLen = ${qLen}`);
+      console.log(JSON.parse(JSON.stringify(q)));
+      for (let i = 0; i < qLen; i++) {
+        const curr = q.shift(); // 1st element is removed
+        if (adjGraph.isVisited(newX, newY)) {
+          // stop adding to q when the correct coords are reached
+          // do not add new moves to the q as the shortest path has been found.
+          // do finish the q as there may be multiple shortest paths
+          // do nothing -
+        } else {
+          const moves = this.getAvailableMoves(curr[0], curr[1]); // arr of valid moves
+          for (const move of moves) {
+            // if move coords in graph are not visited, mark them as such and then push to q
+            if (adjGraph.isVisited(move[0], move[1]) !== true) {
+              adjGraph.visited(move[0], move[1]);
+              q.push(move);
+            }
+          }
+          console.log(JSON.parse(JSON.stringify(q)));
+        }
+      }
+      if (!adjGraph.isVisited(newX, newY)) {
+        moveCounter++;
+      }
+
+      console.log(moveCounter);
+    }
+    console.log(moveCounter);
+    console.log(adjGraph.graph);
+    return moveCounter;
+  }
 }
 
 const knight = new Knight(7, 1);
 
 console.log(Chessboard.grid);
 
-const availableMoves = knight.getAvailableMoves(7, 1);
-console.log(availableMoves);
+// knight.knightMoves(3, 3);
+knight.knightMoves(0, 2);
+
+// const availableMoves = knight.getAvailableMoves(7, 1);
+// console.log(availableMoves);
 
 export { Knight, knight };
