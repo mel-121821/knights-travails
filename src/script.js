@@ -1,6 +1,5 @@
 // imports
 import { Chessboard } from "./chessboard.js";
-import { Node } from "./node.js";
 import { AdjacencyGraph } from "./node.js";
 
 // Code
@@ -13,9 +12,7 @@ import { AdjacencyGraph } from "./node.js";
 // Will also need to use a queue
 
 class Knight {
-  constructor(x = 7, y = 1) {
-    this.x = x;
-    this.y = y;
+  constructor() {
     this.moveVariations = [
       [-2, 1],
       [-2, -1],
@@ -26,13 +23,13 @@ class Knight {
       [1, 2],
       [1, -2],
     ];
-    Chessboard.markCurrentPlace(x, y);
+    // Chessboard.markCurrentPlace(this.coords);
   }
 
-  setPiece(x, y, newX, newY) {
-    Chessboard.markRecentPlace(x, y);
-    Chessboard.markCurrentPlace(newX, newY);
-  }
+  // setPiece(x, y, newX, newY) {
+  //   Chessboard.markRecentPlace(x, y);
+  //   Chessboard.markCurrentPlace(newX, newY);
+  // }
 
   checkMoveValidity(arr) {
     const filtered = arr.filter((subArr) => {
@@ -45,10 +42,10 @@ class Knight {
     return filtered;
   }
 
-  getAvailableMoves(x, y) {
+  getAvailableMoves(coords) {
     const potentialMoves = [];
     for (const option of this.moveVariations) {
-      const newCoords = [x + option[0], y + option[1]];
+      const newCoords = [coords[0] + option[0], coords[1] + option[1]];
       potentialMoves.push(newCoords);
     }
     const availableMoves = this.checkMoveValidity(potentialMoves);
@@ -56,57 +53,56 @@ class Knight {
     return availableMoves;
   }
 
-  knightMoves(newX, newY) {
-    const root = [this.x, this.y];
+  knightMoves(coords, newCoords) {
+    const root = coords;
     const adjGraph = new AdjacencyGraph();
-    adjGraph.visited(root[0], root[1]); // visit coords
+    adjGraph.visited(root); // visit coords
     let moveCounter = 1;
     const q = [];
     q.push(root);
 
     while (q.length) {
       let qLen = q.length;
-      console.log(`while loop q reset. qLen = ${qLen}`);
-      console.log(JSON.parse(JSON.stringify(q)));
+      // console.log(JSON.parse(JSON.stringify(q)));
       for (let i = 0; i < qLen; i++) {
         const curr = q.shift(); // 1st element is removed
-        if (adjGraph.isVisited(newX, newY)) {
-          // stop adding to q when the correct coords are reached
-          // do not add new moves to the q as the shortest path has been found.
-          // do finish the q as there may be multiple shortest paths
-          // do nothing -
-        } else {
-          const moves = this.getAvailableMoves(curr[0], curr[1]); // arr of valid moves
+        if (!adjGraph.isVisited(newCoords)) {
+          // coords not yet visited
+          const moves = this.getAvailableMoves(curr);
           for (const move of moves) {
-            // if move coords in graph are not visited, mark them as such and then push to q
-            if (adjGraph.isVisited(move[0], move[1]) !== true) {
-              adjGraph.visited(move[0], move[1]);
+            if (!adjGraph.isVisited(move)) {
+              adjGraph.visited(move);
+              adjGraph.addEdges(curr, move);
               q.push(move);
             }
           }
-          console.log(JSON.parse(JSON.stringify(q)));
+          // console.log(JSON.parse(JSON.stringify(q)));
         }
       }
-      if (!adjGraph.isVisited(newX, newY)) {
+      if (!adjGraph.isVisited(newCoords)) {
         moveCounter++;
       }
-
-      console.log(moveCounter);
     }
-    console.log(moveCounter);
+    console.log(`You made it in ${moveCounter} moves!`);
+    adjGraph.logEdges(newCoords);
     console.log(adjGraph.graph);
     return moveCounter;
   }
 }
 
-const knight = new Knight(7, 1);
+const knight = new Knight();
+const adj = new AdjacencyGraph();
 
-console.log(Chessboard.grid);
+// console.log(Chessboard.grid);
+adj.visited([7, 1]);
+// console.log(adj.isVisited(7, 1));
 
-// knight.knightMoves(3, 3);
-knight.knightMoves(0, 2);
+knight.knightMoves([7, 1], [3, 3]);
+// knight.knightMoves([3, 3], [4, 3]);
+knight.knightMoves([0, 6], [3, 3]);
+// knight.knightMoves(0, 2);
 
 // const availableMoves = knight.getAvailableMoves(7, 1);
 // console.log(availableMoves);
 
-export { Knight, knight };
+export { knight };
