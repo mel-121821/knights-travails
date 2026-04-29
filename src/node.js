@@ -1,14 +1,9 @@
 class Node {
-  constructor(x, y, prevNode = null) {
-    this.x = x;
-    this.y = y;
+  constructor(x, y) {
+    this.nodeCoords = [x, y];
     this.visited = false;
-    this.prevNode = prevNode;
+    this.prevNode = null;
     this.nextNodes = [];
-  }
-
-  static getNode(x, y) {
-    return Node;
   }
 }
 
@@ -24,22 +19,35 @@ class AdjacencyGraph {
     for (let i = 0; i < this.rows; i++) {
       graph[i] = [];
       for (let j = 0; j < this.columns; j++) {
-        graph[i].push("");
+        graph[i].push(new Node(i, j));
       }
     }
     return graph;
   }
 
-  addAdj(x, y, arr) {
-    this.graph[x][y] = arr;
+  addEdges(curr, next) {
+    this.graph[curr[0]][curr[1]].nextNodes.push(next);
+    this.graph[next[0]][next[1]].prevNode = this.graph[curr[0]][curr[1]];
   }
 
-  visited(x, y) {
-    this.graph[x][y] = true;
+  logEdges(coords) {
+    let curr = this.graph[coords[0]][coords[1]];
+    const path = [];
+    while (curr.prevNode !== null) {
+      path.push(curr.prevNode.nodeCoords);
+      curr = curr.prevNode;
+    }
+    path.reverse().push(coords);
+    console.log("Here is your path:");
+    console.log(path);
   }
 
-  isVisited(x, y) {
-    return this.graph[x][y];
+  visited(coords) {
+    this.graph[coords[0]][coords[1]].visited = true;
+  }
+
+  isVisited(coords) {
+    return this.graph[coords[0]][coords[1]].visited;
   }
 }
 
