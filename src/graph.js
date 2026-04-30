@@ -3,7 +3,6 @@ class Node {
     this.nodeCoords = [x, y];
     this.visited = false;
     this.prevNode = null;
-    this.nextNodes = [];
   }
 }
 
@@ -26,7 +25,6 @@ class AdjacencyGraph {
   }
 
   addEdges(curr, next) {
-    this.graph[curr[0]][curr[1]].nextNodes.push(next);
     this.graph[next[0]][next[1]].prevNode = this.graph[curr[0]][curr[1]];
   }
 
@@ -38,8 +36,7 @@ class AdjacencyGraph {
       curr = curr.prevNode;
     }
     path.reverse().push(coords);
-    console.log("Here is your path:");
-    console.log(path);
+    return path;
   }
 
   visited(coords) {
